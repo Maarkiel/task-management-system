@@ -138,7 +138,7 @@ wait_for_services() {
     local attempt=1
     
     while [ $attempt -le $max_attempts ]; do
-        if curl -f http://localhost:5000/api/health &> /dev/null; then
+        if curl -f http://localhost:8000/api/health &> /dev/null; then
             log_success "Backend is ready."
             break
         fi

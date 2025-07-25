@@ -156,7 +156,7 @@ wait_for_services() {
     # Wait for frontend
     attempt=1
     while [ $attempt -le $max_attempts ]; do
-        if curl -f http://localhost:3000 &> /dev/null; then
+        if curl -f http://localhost:3500 &> /dev/null; then
             log_success "Frontend is ready."
             break
         fi
@@ -183,7 +183,7 @@ show_status() {
     
     echo ""
     log_success "Application is running!"
-    log_info "Frontend: http://localhost:3000"
+    log_info "Frontend: http://localhost:3500"
     log_info "Backend API: http://localhost:5000/api"
     log_info "API Documentation: http://localhost:5000/api/docs"
 }

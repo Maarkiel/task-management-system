@@ -47,7 +47,7 @@ services:
       dockerfile: Dockerfile
     container_name: taskmanager-frontend
     ports:
-      - "3000:8080"
+      - "3500:8080"
     environment:
       - VITE_API_URL=/api
     depends_on:
@@ -57,7 +57,7 @@ services:
       - taskmanager-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

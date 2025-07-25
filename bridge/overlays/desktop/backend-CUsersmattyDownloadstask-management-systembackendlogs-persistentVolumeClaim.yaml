@@ -1,0 +1,9 @@
+#! backend-C:\Users\matty\Downloads\task-management-system\backend\logs-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: backend-c--users-matty-downloads-task-management-system-backend-logs
+    namespace: taskmanager
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

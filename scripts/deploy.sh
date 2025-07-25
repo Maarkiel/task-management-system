@@ -97,6 +97,11 @@ backup_data() {
         log_info "No existing data to backup."
     fi
 }
+# Fix for Git Bash path issues on Windows
+if [[ "$(uname -s)" == MINGW* ]]; then
+    export MSYS_NO_PATHCONV=1
+fi
+
 
 build_images() {
     log_info "Building Docker images..."

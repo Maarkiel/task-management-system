@@ -1,0 +1,11 @@
+#! kustomization.yaml
+# Generated code, do not edit
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ../../base
+patches:
+    - path: backend-C:\Users\matty\Downloads\task-management-system\backend\database-persistentVolumeClaim.yaml
+    - path: backend-C:\Users\matty\Downloads\task-management-system\backend\logs-persistentVolumeClaim.yaml
+    - path: backend-service.yaml
+    - path: frontend-service.yaml

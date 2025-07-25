@@ -1,0 +1,66 @@
+#! backend-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend
+    namespace: taskmanager
+    labels:
+        com.docker.compose.project: taskmanager
+        com.docker.compose.service: backend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: taskmanager
+            com.docker.compose.service: backend
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: taskmanager
+                com.docker.compose.service: backend
+                com.docker.compose.network.taskmanager-network: "true"
+        spec:
+            restartPolicy: unless-stopped
+            containers:
+                - name: taskmanager-backend
+                  image: taskmanager-backend
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: CORS_ORIGINS
+                      value: "http://localhost:3000,http://127.0.0.1:3000"
+                    - name: DATABASE_URL
+                      value: "sqlite:///app.db"
+                    - name: FLASK_ENV
+                      value: "production"
+                    - name: JWT_SECRET_KEY
+                      value: "1e2eb61cddbcdc346195993178d0834019369513a59404fed2a0d5d9df6a382b"
+                    - name: SECRET_KEY
+                      value: "ae655225b1cd20405f31836b5ae770927ff28daed21592c7"
+                  livenessProbe:
+                    exec:
+                        command:
+                            - /bin/sh
+                            - -c
+                            - curl -f http://localhost:5000/api/health || exit 1
+                    periodSeconds: 30
+                    initialDelaySeconds: 90
+                    timeoutSeconds: 10
+                    failureThreshold: 3
+                  ports:
+                    - name: backend-5000
+                      containerPort: 5000
+                  volumeMounts:
+                    - name: app-src-database
+                      mountPath: /app/src/database
+                    - name: app-logs
+                      mountPath: /app/logs
+            volumes:
+                - name: app-src-database
+                  hostPath:
+                    path: C:\Users\matty\Downloads\task-management-system\backend\database
+                - name: app-logs
+                  hostPath:
+                    path: C:\Users\matty\Downloads\task-management-system\backend\logs

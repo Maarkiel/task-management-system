@@ -1,6 +1,21 @@
-version: '3.8'
-
 services:
+
+  db:
+    image: postgres:13
+    container_name: taskmanager-db
+    environment:
+      POSTGRES_DB: task_manager_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - taskmanager-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d task_manager_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     build:
       context: ./backend
@@ -15,25 +30,24 @@ services:
       - DATABASE_URL=sqlite:///app.db
       - CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
     volumes:
-      - backend_data:/app/src/database
-      - backend_logs:/app/logs
+      - ./backend/database:/app/src/database
+      - ./backend/logs:/app/logs
     networks:
       - taskmanager-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/api/health || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 40s
-
+      retries: 5
+      start_period: 20s
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: taskmanager-frontend
     ports:
-      - "3000:3000"
+      - "3000:8080"
     environment:
       - VITE_API_URL=/api
     depends_on:
@@ -43,11 +57,12 @@ services:
       - taskmanager-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
+
 
   # Optional: Add a reverse proxy for production
   nginx:
@@ -72,6 +87,8 @@ volumes:
   backend_data:
     driver: local
   backend_logs:
+    driver: local
+  db_data:
     driver: local
 
 networks:

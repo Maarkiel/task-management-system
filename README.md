@@ -264,5 +264,14 @@ For support and questions:
 
 ---
 
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh deploy    # full deploy
+./scripts/deploy.sh stop      # stop containers
+./scripts/deploy.sh restart   # restart
+./scripts/deploy.sh logs      # logs view
+./scripts/deploy.sh status    # containers status
+./scripts/deploy.sh backup    # backup
+./scripts/deploy.sh cleanup   # delete useless data
+
 **Note**: This is a demonstration project showcasing modern full-stack development practices and can serve as a foundation for building production-ready task management applications. This project was created as a portfolio piece to demonstrate comprehensive full-stack development skills including backend API development, frontend React applications, real-time features, testing, containerization, and deployment practices.
 

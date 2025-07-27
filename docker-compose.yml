@@ -23,12 +23,10 @@ services:
     container_name: taskmanager-backend
     ports:
       - "8000:5000"
+    env_file:
+      - .env
     environment:
-      - FLASK_ENV=production
-      - SECRET_KEY=${SECRET_KEY:-dev-secret-key-change-in-production}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-jwt-secret-key-change-in-production}
-      - DATABASE_URL=sqlite:///app.db
-      - CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+      - PYTHONPATH=/app
     volumes:
       - ./backend/database:/app/src/database
       - ./backend/logs:/app/logs
